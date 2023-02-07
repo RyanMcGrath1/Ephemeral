@@ -30,6 +30,3 @@ Upon visiting the website, you will be prompted to enter your credit card expens
 
 Contributions are welcome! If you have an idea for a new feature or find a bug, please open an issue or submit a pull request.
 
-## License
-
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
