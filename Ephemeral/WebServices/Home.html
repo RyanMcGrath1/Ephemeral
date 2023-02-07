@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+
+    <style>
+        body {
+            background-image: url("images/jared.jpg");
+        }
+
+        canvas {
+            margin-left: 840px;
+            margin-right: auto;
+            display: block;
+        }
+
+        .logo a {
+            font-size: 2.8em;
+            padding: 10px 0;
+            font-weight: 400;
+            color: white;
+            font-family: "Didot", serif;
+        }
+
+        .logo a:link {
+            text-decoration: none;
+        }
+
+
+        .logo a:visited {
+            text-decoration: none;
+        }
+
+
+        .logo a:hover {
+            text-decoration: none;
+        }
+
+
+        .logo a:active {
+            text-decoration: none;
+        }
+
+        .grid-container > div {
+            background-color: rgba(255, 255, 255, 0.8);
+            text-align: left;
+            padding: 10px 10px;
+            font-size: 20px;
+
+        }
+
+        .addDropTable {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
+
+
+</head>
+<body>
+
+
+<div class="logo">
+    <a href="index.html"><i>Ephemeral</i></a>
+</div>
+<!--create node-->
+
+<div>
+    <h1 style="text-align: center; color: white;"><i>Spend Analyzer</i></h1>
+</div>
+<div class="chart-container" style="position: relative; height: 30vw; width:20vw; margin: 0;">
+    <canvas id="myChart"></canvas>
+</div>
+
+<div class="addDropTable">
+    <form action="Home.html" method="post">
+        <table id="emptbl">
+            <tr style="color: white; text-align: left">
+                <th>Charge #</th>
+                <th>Name</th>
+                <th>Amount</th>
+                <th>Type</th>
+            </tr>
+        </table>
+        <table>
+            <tr>
+                <td><input type="button" value="Add Row" onclick="addRows()"/></td>
+                <td><input type="button" value="Delete Row" onclick="deleteRows()"/></td>
+                <td><input type="button" value="Submit" onclick="getData()"/></td>
+            </tr>
+        </table>
+    </form>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+
+
+
+    const table = document.getElementById('emptbl');
+    const cellCount = table.rows[0].cells.length;
+    const totals = [0, 0, 0, 0, 0, 0];
+
+    function getData() {
+        const rowCount = table.rows.length;
+
+        for(let i = 0; i < rowCount - 1; i++) {
+            const amount = document.getElementsByName(`amount`)[i].value;
+            const dept = document.getElementsByName(`department`)[i].value;
+            if (dept) {
+                totals[dept] += parseInt(amount);
+            } else {
+                // warn that a department is missing!
+            }
+        }
+        chart();
+        // this is the compiled totals from the table.
+        console.log('!', totals);
+    }
+
+
+
+    function addRows() {
+        const existingRows = table.rows.length - 1; // this number includes the header, so we're subtracting 1
+        const newRow = table.insertRow();    // add the new row in
+        // and then set the contents to a new blank item - just name each item the same name, and we can access it with the index above
+        newRow.innerHTML = `<td id="col0">
+            <input type="number" name="empname" id="chargeNum"/>
+        </td>
+        <td id="col1">
+            <input type="text" name="name"/>
+        </td>
+        <td id="col2">
+            <input type="number" name="amount"/>
+        </td>
+        <td id="col3">
+            <select name="department" id="dept">
+                <option value="">Select Department</option>
+                <option value="0">Restaurants</option>
+                <option value="1">Gasoline</option>
+                <option value="2">Home Improvement</option>
+                <option value="3">Grocery</option>
+                <option value="4">Merchandise</option>
+                <option value="5">Misc</option>
+            </select>
+        </td>`;
+    }
+
+    function deleteRows() {
+        // this needs to be re-read each time, because the table will be different
+        const rowCount = table.rows.length;
+
+        if (rowCount > '2') {
+            table.deleteRow(rowCount - 1);
+        } else {
+            alert('There should be at least one row');
+        }
+
+    }
+
+
+
+
+    //These next two functions are used in the generation of the graph
+    //Eventually I would pass in the data from the getData() function to line 203
+    // where the data for the chart is stored
+
+    const ctx = document.getElementById("myChart").getContext("2d");
+    const option = {
+        title: {
+            display: true,
+            text: "Spend Analyzer",
+        },
+        scales: {
+            // fontColor: "white"
+        },
+        responsive: true,
+        maintainAspectRatio: true,
+        layout: {
+            padding: {
+                left: 50,
+                right: 0,
+                top: 0,
+                bottom: 0
+            }
+        }
+    }
+
+    // add the first blank row
+    addRows();
+
+    //More than likely the chart will not be centered on your screen, I am aware of this since I
+    //Had lots of trouble centering the graph in a responsive way so I hard fixed it on the page
+
+    function chart() {
+
+
+        const myChart = new Chart(ctx, {
+            type: 'doughnut',
+            options: option,
+            data: {
+                labels: ["Restaurants", "Grocery", "Gasoline", "Merchandise", "Home Improvement", "Misc"],
+                font: {
+                    colors: [
+                        'rgba(255, 255, 255, 1)',
+                        'rgba(255, 255, 255, 0.7)',
+                        'rgba(255, 255, 255, 0.7)',
+                        'rgba(255, 255, 255, 0.7)',
+                        'rgba(255, 255, 255, 0.7)',
+                        'rgba(255, 255, 255, 0.7)',
+                    ],
+                },
+                datasets: [{
+                    label: "Number of votes",
+                    data: [totals[0], totals[1], totals[2], totals[3], totals[4], totals[5]],
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.7)',
+                        'rgba(54, 162, 235, 0.7)',
+                        'rgba(255, 206, 86, 0.7)',
+                        'rgba(75, 192, 192, 0.7)',
+                        'rgba(153, 102, 255, 0.7)',
+                        'rgba(255, 159, 64, 0.7)'
+                    ],
+                    borderColor: [
+                        'rgba(255,99,132,1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)',
+                        'rgba(255, 159, 64, 1)'
+                    ],
+                    borderWidth: 2,
+                    hoverBorderWidth: 3,
+                    hoverOffset: 4,
+                }],
+            },
+        });
+
+    }
+</script>
+
+
+</body>
+</html>
