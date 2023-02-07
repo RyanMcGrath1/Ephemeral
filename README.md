@@ -27,8 +27,3 @@ git clone https://github.com/RyanMcGrath1/Ephemeral.git
 ## Usage
 
 Upon visiting the website, you will be prompted to enter your credit card expenses. The expenses will be organized into groups and visualized using a color-coordinated diagram. You can edit and add expenses as needed.
-
-## Contributing
-
-Contributions are welcome! If you have an idea for a new feature or find a bug, please open an issue or submit a pull request.
-
