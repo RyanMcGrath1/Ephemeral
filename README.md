@@ -20,7 +20,7 @@ Ephemeral is a mock website that creates a visual diagram of credit card expense
 git clone https://github.com/RyanMcGrath1/Ephemeral.git
 ```
 
-2. Open the `index.html` file in your preferred web browser.
+2. Open the `Ephemeral/WebServices/index.html` file in your preferred web browser.
 
 ## Usage
 
