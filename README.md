@@ -2,6 +2,8 @@
 
 Ephemeral is a mock website that creates a visual diagram of credit card expenses, breaking down expenses into groups and color-coordinating them for easier visualization. Since this website is not connected to any endpoints, users will manually create charges internally. 
 
+This project was a valuable learning experience, allowing me to enhance my technical skills and understanding of web-base development as a whole.
+
 ## Features
 
 - Organizes credit card expenses into meaningful groups
